@@ -26,6 +26,10 @@ Describe your project in one/two lines.
 - **Resource list** - As a user I want to see all the resources available so that I can choose which ones I want to access
 - **Resource create** - As a user I want to create an resource so that I can share it with the community
 
+## Sprint 2
+ - **See project students** - As a user I want to see the project students so that i know who did what.  
+ - **See events attendees** - As a user I want to see the events attendees so that i know if i want to attend. 
+ - **See events projects** - As a user I want to see the events projects so that i know if i want to attend. 
 
 ## Backlog
 List of other features outside of the MVPs scope
