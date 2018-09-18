@@ -11,13 +11,15 @@
     "seed-users": "node ./bin/seed/users.js",
     "seed-resources": "node ./bin/seed/resources.js",
     "seed-projects": "node ./bin/seed/projects.js",
-    "seed-events": "node ./bin/seed/events.js"
+    "seed-events": "node ./bin/seed/events.js",
+    "seed-cohorts": "node ./bin/seed/cohorts.js"
   },
   "engines": {
     "node": "v10.5.0",
     "npm": "6.1.0"
   },
   "dependencies": {
+    "bcrypt": "^3.0.0",
     "cloudinary": "^1.11.0",
     "connect-flash": "^0.1.1",
     "connect-mongo": "^2.0.1",
