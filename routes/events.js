@@ -8,6 +8,7 @@ const Event = require('../models/events');
 
 router.get('/', (req, res, next) => {
   Event.find({})
+    .populate('attendees')
     .then((results) => {
       const data = {
         events: results

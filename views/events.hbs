@@ -8,6 +8,13 @@
       <li class="card">
         <h3><span class="type">{{this.type}}</span> <span class="name">{{this.name}}</span></h3>
         <p>{{this.date}}</p>
+        {{#if this.attendees.length}}
+        <p>Attending:
+          {{#each this.attendees}}
+            {{this.name}}
+          {{/each}}
+        </p>
+        {{/if}}
         <a href="/events/{{this._id}}">See here for details</a>
         <form class="delete" action="/events/{{this.id}}/delete" method="POST">
           <button class="button danger">Delete</button>
@@ -17,3 +24,4 @@
   </ul>
 
 </section>
+
