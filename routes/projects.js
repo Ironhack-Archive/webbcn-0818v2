@@ -9,6 +9,7 @@ const Project = require('../models/project');
 
 router.get('/', (req, res, next) => {
   Project.find({})
+    .populate('students')
     .then((results) => {
       const data = {
         projects: results
@@ -31,15 +32,15 @@ router.get('/create', (req, res, next) => {
 });
 
 router.post('/create', (req, res, next) => {
-  const { name, studentName, presentationURL, projectURL, imageURL } = req.body;
+  const { name, students, presentationURL, projectURL, imageURL } = req.body;
 
-  if (!name || !studentName || !presentationURL || !projectURL || !imageURL) {
+  if (!name || !students || !presentationURL || !projectURL || !imageURL) {
     req.flash('project-form-error', 'all fields are mandatory');
-    req.flash('project-form-data', { name, studentName, presentationURL, projectURL, imageURL });
+    req.flash('project-form-data', { name, students, presentationURL, projectURL, imageURL });
     return res.redirect('/projects/create');
   }
 
-  const project = new Project({ name, studentName, presentationURL, projectURL, imageURL });
+  const project = new Project({ name, students, presentationURL, projectURL, imageURL });
   project.save()
     .then(() => {
       res.redirect('/projects');
@@ -54,6 +55,7 @@ router.get('/:projectId', (req, res, next) => {
   //   return res.redirect('/projects');
   // }
   Project.find({ _id: id })
+    .populate('students')
     .then((results) => {
       const data = {
         projects: results

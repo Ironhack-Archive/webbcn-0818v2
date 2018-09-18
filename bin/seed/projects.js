@@ -5,17 +5,32 @@ require('dotenv').config();
 const dotenv = require('dotenv');
 const result = dotenv.config();
 
+const mongoose = require('mongoose');
+
+const Project = require('../../models/project');
+const projects = require('../../data/projects');
+const User = require('../../models/user');
+
 if (result.error) {
   throw result.error;
 }
 
 console.log(result.parsed);
 
-const mongoose = require('mongoose');
+function updateProjectStudentName (students, project, index) {
+  return User.findOne({ name: students })
+    .then((student) => {
+      if (!student) {
+        throw new Error('Unknown student ' + students);
+      }
+      project.students[index] = student._id;
+    });
+}
 
-const Project = require('../../models/project');
-
-const projects = require('../../data/projects');
+function updateProjectStudentNameIds (project) {
+  const promisesOfUpdatingProjectStudentId = project.students.map((students, index) => updateProjectStudentName(students, project, index));
+  return Promise.all(promisesOfUpdatingProjectStudentId);
+}
 
 mongoose.connect(process.env.MONGODB_URI, {
   keepAlive: true,
@@ -24,6 +39,10 @@ mongoose.connect(process.env.MONGODB_URI, {
 })
   .then(() => {
     return Project.remove({});
+  })
+  .then(() => {
+    const promisesOfUpdatingProjectStudents = projects.map((project) => updateProjectStudentNameIds(project));
+    return Promise.all(promisesOfUpdatingProjectStudents);
   })
   .then(() => {
     return Project.insertMany(projects);

@@ -6,7 +6,13 @@
     <li class="photo">
       <p class="label">
         <span class="project">"{{this.name}}" </span>
-        <span class="student">- By : {{this.studentName}}</span>
+        <span class="student">- By:
+          {{#each this.students}}
+          <a href="{{this.url}}">
+            {{this.name}}
+          </a>
+          {{/each}}
+        </span>
       </p>
       <img src="{{this.imageURL}}" alt="">
       <div>
