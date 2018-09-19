@@ -4,7 +4,7 @@
 
   <div class="field" >
     <label>Username</label>
-    <input type="text" name="username"/>
+    <input type="text" name="username" value="{{fields.username}}" />
   </div>
 
  <div class="field" >
@@ -14,15 +14,15 @@
 
   <div class="field" >
     <label>Full name</label>
-    <input type="text" name="name"/>
+    <input type="text" name="name" value="{{fields.name}}"/>
   </div>
 
   <div class="field" >
     <label>Cohort</label>
-    <select name="cohort">
+    <select name="cohortId">
       <option value="">Choose your cohort...</option>
       {{#each cohorts}}
-        <option value="{{this.name}}">{{this.name}}</option>
+        <option value="{{this.id}}">{{this.name}}</option>
       {{/each}}
     </select>
   </div>

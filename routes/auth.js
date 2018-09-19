@@ -2,6 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
+const ObjectId = require('mongoose').Types.ObjectId;
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
@@ -51,9 +52,12 @@ router.get('/signup', (req, res, next) => {
   if (req.session.currentUser) {
     return res.redirect('/');
   }
-  const messages = req.flash('signup-error');
+  const formErrors = req.flash('signup-error');
+  const formData = req.flash('signup-form-data');
+
   const data = {
-    message: messages[0]
+    message: formErrors[0],
+    fields: formData[0]
   };
   Cohort.find()
     .then(results => {
@@ -64,14 +68,19 @@ router.get('/signup', (req, res, next) => {
 });
 
 router.post('/signup', (req, res, next) => {
-  console.log(req.body);
   if (req.session.currentUser) {
     return res.redirect('/');
   }
-  const { username, password, name, cohort } = req.body;
+  const { username, password, name, cohortId } = req.body;
 
-  if (!username || !password || !name || !cohort) {
-    req.flash('signup-error', 'Username and password are required');
+  if (!username || !password || !name || !cohortId) {
+    req.flash('signup-error', 'Username, password, name and cohort are required');
+    req.flash('signup-form-data', { username, name });
+    return res.redirect('/auth/signup');
+  }
+  if (!ObjectId.isValid(cohortId) && !cohortId.match(/^[a-fA-F0-9]{24}$/)) {
+    req.flash('signup-error', 'That cohort doesn\'t exist');
+    req.flash('signup-form-data', { username, name });
     return res.redirect('/auth/signup');
   }
   User.findOne({ username })
@@ -88,8 +97,11 @@ router.post('/signup', (req, res, next) => {
       const user = new User({ username, password: hashedPassword, name });
       return user.save()
         .then(() => {
-          req.session.currentUser = user;
-          res.redirect('/');
+          Cohort.findByIdAndUpdate(cohortId, { $push: { students: user.id } }, { new: true })
+            .then(() => {
+              req.session.currentUser = user;
+              res.redirect('/');
+            });
         });
     })
     .catch(next);

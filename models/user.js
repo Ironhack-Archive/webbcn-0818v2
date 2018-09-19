@@ -3,6 +3,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+// @REVIEW some comment
+
 const userSchema = new Schema({
   username: {
     type: String,
