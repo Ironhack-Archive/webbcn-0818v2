@@ -7,7 +7,10 @@ const User = require('../models/user');
 router.get('/', (req, res, next) => {
   User.find({})
     .then((result) => {
-      const data = { students: result };
+      const data = {
+        script: 'homepage',
+        students: result
+      };
 
       res.render('index', data);
     })

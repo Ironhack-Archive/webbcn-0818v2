@@ -218,8 +218,8 @@ User profile:
 - GET /api/students
   - return all the students (json)
 
-- GET /api/email-unique?email=email
-  - receives email (string)
+- GET /api/username-unique?username=username
+  - receives username (string)
   - returns an object `{ unique: true}`
 
 ## Models

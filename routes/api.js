@@ -16,4 +16,16 @@ router.get('/students', (req, res, next) => {
     });
 });
 
+router.get('/username-unique', (req, res, next) => {
+  const username = req.query.username;
+  User.findOne({ username })
+    .then((result) => {
+      res.json({ unique: !result });
+    })
+    .catch((err) => {
+      console.error('ERROR', req.method, req.path, err);
+      res.status(500).json({ message: 'error-unexpected' });
+    });
+});
+
 module.exports = router;

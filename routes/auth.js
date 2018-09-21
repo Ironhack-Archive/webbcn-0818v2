@@ -56,6 +56,7 @@ router.get('/signup', (req, res, next) => {
   const formData = req.flash('signup-form-data');
 
   const data = {
+    script: 'signup',
     message: formErrors[0],
     fields: formData[0]
   };

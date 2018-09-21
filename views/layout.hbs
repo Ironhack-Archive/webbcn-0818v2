@@ -43,8 +43,10 @@
       <p>footer</p>
     </div>
   </footer>
-
-  <script src="/javascripts/main.js"></script>
+  <script src="/javascripts/axios.min.js"></script>
+  {{#if script}}
+    <script src="/javascripts/{{script}}.js"></script>
+  {{/if }}
 </body>
 
 </html>
