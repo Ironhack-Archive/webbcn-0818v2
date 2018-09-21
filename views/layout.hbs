@@ -18,6 +18,18 @@
         <a href="/events">Events</a>
         <a href="/resources">Resources</a>
         <a href="/images">Images</a>
+        <div class="auth-links">
+          {{#unless currentUser}}
+        <a href="/auth/login">Log in</a>
+        <a href="/auth/signup">Sign up</a>
+        {{/unless}}
+        {{#if currentUser}}
+          Hi {{currentUser.username}}! 👊🏼 
+          <form method="POST" action="/auth/logout">
+            <button type="submit">Log out</button>
+          </form>
+        {{/if}}
+        </div>
       </nav>
     </div>
   </header>

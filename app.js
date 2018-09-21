@@ -11,6 +11,7 @@ const flash = require('connect-flash');
 
 const index = require('./routes/index');
 const api = require('./routes/api');
+const auth = require('./routes/auth');
 const resources = require('./routes/resources');
 const events = require('./routes/events');
 const projects = require('./routes/projects');
@@ -45,6 +46,11 @@ app.use(session({
   }
 }));
 
+app.use((req, res, next) => {
+  app.locals.currentUser = req.session.currentUser;
+  next();
+});
+
 // -- middlewares
 app.use(logger('dev'));
 app.use(express.json());
@@ -55,6 +61,7 @@ app.use(flash());
 // -- routes
 app.use('/', index);
 app.use('/api', api);
+app.use('/auth', auth);
 app.use('/events', events);
 app.use('/projects', projects);
 app.use('/resources', resources);
