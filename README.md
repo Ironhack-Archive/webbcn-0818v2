@@ -213,6 +213,14 @@ User profile:
   - show the student page
   - use student layout
 
+## API Routes
+
+- GET /api/students
+  - return all the students (json)
+
+- GET /api/email-unique?email=email
+  - receives email (string)
+  - returns an object `{ unique: true}`
 
 ## Models
 User model
