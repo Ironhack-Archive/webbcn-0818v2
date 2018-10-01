@@ -6,7 +6,11 @@
     <li class="photo">
       <p class="label">
         <span class="project">"{{this.name}}" </span>
-        <span class="student">- By : {{this.studentName}}</span>
+        <span class="student">- By:
+          {{#each this.students}}
+            {{this.name}}
+          {{/each}}
+        </span>
         <a href="{{this.presentationURL}}" class="presentation">Presentation</a>
         <a href="{{this.projectURL}}" class="project">Project</a>
       </p>
