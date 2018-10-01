@@ -3,8 +3,24 @@
 require('dotenv').config();
 
 const mongoose = require('mongoose');
-const data = require('../../data/events.js');
+const events = require('../../data/events.js');
 const Event = require('../../models/events.js');
+const Attendee = require('../../models/user.js');
+
+function updateAttendee (attendee, event, index) {
+  return Attendee.findOne({ name: attendee })
+    .then((result) => {
+      if (!result) {
+        throw new Error('Unknown result ' + attendee);
+      }
+      event.attendees[index] = result._id;
+    });
+}
+
+function updateAttendeeId (event) {
+  const promisesOfUpdatingEventAttendeeId = event.attendees.map((attendee, index) => updateAttendee(attendee, event, index));
+  return Promise.all(promisesOfUpdatingEventAttendeeId);
+}
 
 mongoose.connect(process.env.MONGODB_URI, {
   keepAlive: true,
@@ -16,8 +32,13 @@ mongoose.connect(process.env.MONGODB_URI, {
     return Event.remove({});
   })
   .then(() => {
+    const promisesOfUpdatingEventAttendee = events.map((event) => updateAttendeeId(event));
+    return Promise.all(promisesOfUpdatingEventAttendee);
+  })
+  .then(() => {
+    // user1 = users.find();
     console.log('Empty db');
-    return Event.insertMany(data);
+    return Event.insertMany(events);
   })
   .then((results) => {
     console.log('You have some events', results.length);
