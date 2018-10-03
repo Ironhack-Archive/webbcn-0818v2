@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const flash = require('connect-flash');
+const cors = require('cors');
 
 const index = require('./routes/index');
 const api = require('./routes/api');
@@ -52,6 +53,11 @@ app.use((req, res, next) => {
 });
 
 // -- middlewares
+
+app.use(cors({
+  credentials: true,
+  origin: ['http://localhost:4200']
+}));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
